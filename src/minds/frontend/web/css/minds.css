@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css?family=Chela+One');
+@import url('https://fonts.googleapis.com/css?family=Gaegu');
+
+body,html{
+	overflow: hidden;
+}
+
+.header{
+	background-color: #337ab7;
+	color: #FFFFFF;
+	font-family: 'Chela One', cursive;
+	box-shadow: 0 0 20px rgba(0,0,0,1);
+	margin-bottom: 5px;
+
+}
+.list-inline a{
+	color: #FFFFFF;
+}
+.field-option button{
+	height: 100%;
+	position: absolute;
+	right: 0px;
+}
+.field-option{
+	position: relative;
+	margin-bottom: 5px;
+	background-color: #FFFACD;
+	height: 30px;
+	text-align: center;
+	box-shadow: 0 0 5px rgba(0,0,0,1);
+	border-radius: 4px;
+}
+.field-option a{
+	font-family: 'Gaegu', cursive;
+	color: #000000;
+}
+.footer{
+	padding-left: 20px;
+}
+#main nav{
+	padding-left: 5px;
+}
+#main{
+	min-height:calc(100vh - 170px);
+}
+
+.field{
+	min-height:calc(100vh - 170px);
+	background-image: url(../img/2.jpg);
+}
+
+.card{
+	position: absolute;
+	background-color: #FFFFE0;
+	width: 150px;
+	height: 200px;
+	box-shadow: 10px 10px 20px rgba(0,0,0,1);
+	margin: 0px;
+}
+
+#add-field{
+	display: flex;
+	align-items: center;
+  	justify-content: center;
+  	margin-bottom: 5px;
+  	padding-left: 20px;
+  	padding-right: 15px;
+}
+#field-button{
+	width: 100%;
+	font-family: 'Gaegu', cursive;
+}
+#field-button b{
+	font-size: x-large;
+}
+
+footer{
+	color: #FFFFFF;
+	background-color: #191970;
+	position: absolute;
+	height: 100px;
+	width: 100%;
+	bottom: 0px;
+}
