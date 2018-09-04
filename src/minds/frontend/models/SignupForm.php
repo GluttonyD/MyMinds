@@ -12,6 +12,7 @@ namespace frontend\models;
 use yii\base\Model;
 use common\models\User;
 use yii\base\Security;
+use yii\helpers\VarDumper;
 
 class SignUpForm extends Model
 {
@@ -57,7 +58,7 @@ class SignUpForm extends Model
             $tmp=$this->password.$salt;
             $user->password_hash=\Yii::$app->getSecurity()->generatePasswordHash($tmp);
             $user->save();
-            return true;
+            return $user;
         }
         return false;
     }

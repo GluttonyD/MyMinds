@@ -3,6 +3,10 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+/**
+ * @var $user common\models\User
+ */
+
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -11,6 +15,8 @@ use frontend\assets\MyAsset;
 use common\widgets\Alert;
 
 MyAsset::register($this);
+if(!Yii::$app->user->isGuest)
+    $user=Yii::$app->user->getIdentity();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -36,7 +42,7 @@ MyAsset::register($this);
                 <ul class="list-inline">
                     <li><a href="#">На главную</a></li>
                     <li><a href="#">О Нас</a></li>
-                    <li><a href="#">Вход</a></li>
+                    <li><a href="/minds/exit">Выход (<?= $user->username ?>)</a></li>
                 </ul>
             </nav>
         </div>
