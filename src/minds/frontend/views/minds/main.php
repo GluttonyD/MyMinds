@@ -17,8 +17,6 @@
             <div id="draggable" class="card">
                 <p>типа карточка</p>
             </div>
-            <div id="draggable" class="card">
-            </div>
         </div>
     </div>
 </section>

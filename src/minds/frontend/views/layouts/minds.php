@@ -42,7 +42,9 @@ if(!Yii::$app->user->isGuest)
                 <ul class="list-inline">
                     <li><a href="#">На главную</a></li>
                     <li><a href="#">О Нас</a></li>
-                    <li><a href="/minds/exit">Выход (<?= $user->username ?>)</a></li>
+                    <?php if(!Yii::$app->user->isGuest) { ?>
+                    <li><a href="/minds/exit">Выход (<?= $user->username ?>)</a>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>

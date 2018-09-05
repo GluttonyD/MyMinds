@@ -82,3 +82,11 @@ footer{
 	width: 100%;
 	bottom: 0px;
 }
+
+.sign-in{
+	height: 700px;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+}

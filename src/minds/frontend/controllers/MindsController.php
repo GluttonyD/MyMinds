@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use frontend\models\SigninForm;
 use frontend\models\SignUpForm;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -19,9 +20,8 @@ class MindsController extends Controller
 
     public function beforeAction($action)
     {
-        $guest_access=array();
-//        VarDumper::dump($action->id);
-        if(\Yii::$app->user->isGuest && $action->id!='sign-up'){
+        $guest_access=array('sign-in','sign-up');
+        if(\Yii::$app->user->isGuest &&!in_array($action->id,$guest_access)){
             return $this->redirect('sign-up');
         }
         else{
@@ -46,8 +46,22 @@ class MindsController extends Controller
         }
     }
 
-    public function actionExit(){
-        $user=\Yii::$app->user->getIdentity();
+    public function actionExit()
+    {
+        $user = \Yii::$app->user->getIdentity();
         \Yii::$app->user->logout($user);
         return $this->redirect('sign-up');
+    }
+
+    public function actionSignIn(){
+        $model=new SigninForm();
+        if($model->load(\Yii::$app->request->post())&&$model->signIn()){
+            return $this->redirect('index');
+        }
+        else{
+            return $this->render('sign_in',[
+                'model'=>$model
+            ]);
+        }
+    }
 }
