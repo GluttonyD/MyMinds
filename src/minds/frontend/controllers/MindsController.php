@@ -9,6 +9,8 @@
 namespace frontend\controllers;
 
 
+use common\models\Card;
+use common\models\Field;
 use frontend\models\SigninForm;
 use frontend\models\SignUpForm;
 use yii\helpers\VarDumper;
@@ -30,7 +32,11 @@ class MindsController extends Controller
     }
 
     public function actionIndex(){
-        return $this->render('main');
+        $user=\Yii::$app->user->getId();
+        $fields=Field::find()->where(['user_id'=>$user])->all();
+        return $this->render('main',[
+            'fields'=>$fields
+        ]);
     }
 
     public function actionSignUp(){
@@ -63,5 +69,25 @@ class MindsController extends Controller
                 'model'=>$model
             ]);
         }
+    }
+
+    public function actionAddField(){
+        $user=\Yii::$app->user->getId();
+        $field=new Field();
+        $field->name='default';
+        $field->user_id=$user;
+        $field->save();
+        return $field->id;
+    }
+
+    public function actionAddCard($field_id){
+        $user=\Yii::$app->user->getId();
+        $card=new Card();
+        $card->field_id=$field_id;
+        $card->xPos=325;
+        $card->yPos=74;
+        $card->text="";
+        $card->save();
+        return $card->id;
     }
 }
