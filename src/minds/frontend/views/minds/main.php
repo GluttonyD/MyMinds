@@ -22,6 +22,14 @@ $this->title='Мои мысли';
             </nav>
         </div>
         <div class="col-md-10 field">
+            <?php foreach ($fields as $field){ ?>
+                <?php foreach ($field->cards as $card) { ?>
+                    <div id="<?= $card->id ?>" class="card ui-widget-content" style=" top: <?= $card->yPos-73 ?>px; left: <?= $card->xPos-310 ?>px; " >
+                        <div id="<?= $card->id ?>" class="card-delete">УДАЛИТЬ</div>
+                        <div class="card-text"></div>
+                    </div>
+                <?php   } ?>
+            <?php } ?>
         </div>
     </div>
 </section>

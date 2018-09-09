@@ -14,7 +14,7 @@ $this->title = 'Вход';
         <div class="form-group">
             <input class="form-control" type="password" placeholder="Введите пароль" name="SigninForm[password]">
         </div>
-        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        <button type="submit" class="btn btn-primary">Войти</button>
         <br>
         <a href="/minds/sign-up">Нет аккаунта? Зарегистрируйтесь!</a>
     </form>

@@ -23,17 +23,22 @@ class MindsController extends Controller
     public function beforeAction($action)
     {
         $guest_access=array('sign-in','sign-up');
+        $user_deny=array('sign-in','sign-up');
         if(\Yii::$app->user->isGuest &&!in_array($action->id,$guest_access)){
             return $this->redirect('sign-up');
         }
         else{
-            return true;
+            if(!\Yii::$app->user->isGuest &&in_array($action->id,$user_deny))
+                return $this->redirect('index');
+            else {
+                return true;
+            }
         }
     }
 
     public function actionIndex(){
         $user=\Yii::$app->user->getId();
-        $fields=Field::find()->where(['user_id'=>$user])->all();
+        $fields=Field::find()->where(['user_id'=>$user])->with('cards')->all();
         return $this->render('main',[
             'fields'=>$fields
         ]);
@@ -89,5 +94,33 @@ class MindsController extends Controller
         $card->text="";
         $card->save();
         return $card->id;
+    }
+
+    public function actionSetCardPos($id,$posX,$posY){
+        /**
+         * @var $card Card
+         */
+        $card=Card::find()->where(['id'=>$id])->one();
+        if($card) {
+            $card->xPos = $posX;
+            $card->yPos = $posY;
+            $card->save();
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public function actionCardDelete($id){
+        $card=Card::find()->where(['id'=>$id])->one();
+        if($card){
+            $card->delete();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

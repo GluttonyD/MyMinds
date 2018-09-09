@@ -43,4 +43,8 @@ class Field extends \yii\db\ActiveRecord
             'name' => 'Название',
         ];
     }
+
+    public function getCards(){
+        return $this->hasMany(Card::className(),['field_id'=>'id']);
+    }
 }

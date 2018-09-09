@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property int $field_id
  * @property string $text
- * @property int $xPos
- * @property int $yPos
+ * @property double $xPos
+ * @property double $yPos
  */
 class Card extends \yii\db\ActiveRecord
 {
@@ -29,7 +29,8 @@ class Card extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['field_id', 'xPos', 'yPos'], 'integer'],
+            [['field_id'], 'integer'],
+            [['xPos','yPos'],'double'],
             [['text'], 'string'],
         ];
     }
@@ -47,4 +48,5 @@ class Card extends \yii\db\ActiveRecord
             'yPos' => 'Координата по Y',
         ];
     }
+
 }
