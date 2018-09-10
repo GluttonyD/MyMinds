@@ -48,7 +48,7 @@ body,html{
 .field{
 	position: relative;
 	min-height:calc(100vh - 170px);
-	background-image: url(../img/2.jpg);
+	background-image: url(../img/minds/2.jpg);
 }
 
 .card{
@@ -94,6 +94,23 @@ footer{
 }
 
 .card-delete{
-	position: absolute;
+	position: relative;
+	margin-left: 150px;
 	right: 1px;
+	width: 10px;
+}
+.card-textarea{
+	margin-left: 15px;
+	width: 148px;
+	height: 180px;
+	background:transparent;
+	resize: none;
+	display: none;
+}
+.card-text{
+	margin-left: 15px;
+	width: 148px;
+	height: 180px;
+	background:transparent;
+	resize: none;
 }

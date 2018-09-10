@@ -19,7 +19,7 @@ $(".card").draggable({
             // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
             success: function (data)   // A function to be called if request succeeds
             {
-                console.log('Success');
+                console.log('xPox='+posX+'  yPox='+posY);
             }
         });
     }
@@ -46,8 +46,13 @@ $(document).on("click", ".card-btn", function (e) {
         success: function (data)   // A function to be called if request succeeds
         {
             var card=
-                '<div id="'+data+'" class="card ui-widget-content">'+
-                '   <p>типа карточка</p>' +
+                '<div id="' + data + '" class="card ui-widget-content">' +
+                '<div class="row">' +
+                '<div  id="' + data + '" class="card-delete glyphicon glyphicon-remove"></div> ' +
+                '</div>' +
+                '<div class="row">' +
+                '<div id="' + data +'"  class="card-text"></div> '+
+                '<textarea id="' + data + '" class="card-textarea" ></textarea>'+
                 '</div>';
             $(".field").prepend(card);
             $(".card").draggable({
@@ -55,6 +60,23 @@ $(document).on("click", ".card-btn", function (e) {
                 drag:function (e) {
                 },
                 stop:function (e) {
+                    var id="#"+e.target.id;
+                    var posX=$(id).offset().left;
+                    var posY=$(id).offset().top;
+
+                    $.ajax({
+                        url: '/minds/set-card-pos', // Url to which the request is send
+                        type: "GET",             // Type of request to be send, called as method
+                        data: {id:e.target.id,posX:posX,posY:posY}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                        // contentType: false,       // The content type used when sending data to the server.
+                        cache: false,             // To unable request pages to be cached
+                        processData: true,
+                        // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+                        success: function (data)   // A function to be called if request succeeds
+                        {
+                            console.log('xPox='+posX+'  yPox='+posY);
+                        }
+                    });
                 }
             });
         }
@@ -92,7 +114,43 @@ $(document).on("click",".card-delete",function (e) {
         // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
         success: function (data)   // A function to be called if request succeeds
         {
+            console.log($(element).attr('id'));
             $(element).remove();
+        }
+    });
+});
+
+$(document).on("click",".card-text",function (e) {
+    var element='#'+e.target.id;
+    var element_text='.card-text'+element;
+    var element_textarea='.card-textarea'+element;
+    var text_div=$('.field').find(element_text);
+    var textarea=$('.field').find(element_textarea);
+    text_div.css('display','none');
+    textarea.css('display','block');
+
+});
+
+$(document).on("change",".card-textarea",function (e) {
+    console.log('Чото поменяли');
+    var element='#'+e.target.id;
+    var element_text='.card-text'+element;
+    var element_textarea='.card-textarea'+element;
+    var text_div=$('.field').find(element_text);
+    var textarea=$('.field').find(element_textarea);
+    text_div.css('display','block');
+    textarea.css('display','none');
+    text_div.html(textarea.val());
+    $.ajax({
+        url: '/minds/card-textchange', // Url to which the request is send
+        type: "GET",             // Type of request to be send, called as method
+        data: {id:e.target.id,text:textarea.val()}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        // contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData: true,
+        // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+        success: function (data)   // A function to be called if request succeeds
+        {
         }
     });
 });

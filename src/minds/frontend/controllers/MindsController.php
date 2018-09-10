@@ -123,4 +123,19 @@ class MindsController extends Controller
             return false;
         }
     }
+
+    public function actionCardTextchange($id,$text){
+        /**
+         * @var $card Card
+         */
+        $card=Card::find()->where(['id'=>$id])->one();
+        if($card) {
+            $card->text = $text;
+            $card->save();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
