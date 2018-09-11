@@ -17,7 +17,7 @@ $this->title = 'Мои мысли';
                 <ul class="list-unstyled text-center">
                     <?php
                     foreach ($fields as $field) { ?>
-                        <li id="<?= $field->id ?>" class="field-option"><a href="#"><?= $field->name ?></a>
+                        <li id="<?= $field->id ?>" class="field-option"><a id="<?= $field->id ?>" href="#"><?= $field->name ?></a>
                             <button id="<?= $field->id ?>" class="btn btn-primary card-btn">+</button>
                         </li>
                         <?php
@@ -27,8 +27,8 @@ $this->title = 'Мои мысли';
             </nav>
         </div>
         <div class="col-md-10 field">
-            <?php foreach ($fields as $field) { ?>
-                <?php foreach ($field->cards as $card) { ?>
+            <?php if($fields){ ?>
+                <?php foreach ($fields[0]->cards as $card) { ?>
                     <div id="<?= $card->id ?>" class="card ui-widget-content"
                          style=" top: <?= $card->yPos - 74 ?>px; left: <?= $card->xPos - 310 ?>px; ">
                         <div class="row">

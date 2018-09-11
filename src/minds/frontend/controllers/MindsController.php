@@ -138,4 +138,12 @@ class MindsController extends Controller
             return false;
         }
     }
+
+    public function actionGetField($id){
+        $field=Field::find()->where(['id'=>$id])->with('cards')->asArray()->one();
+        if($field){
+            return json_encode($field);
+        }
+        return false;
+    }
 }

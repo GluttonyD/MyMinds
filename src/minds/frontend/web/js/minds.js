@@ -95,7 +95,7 @@ $(document).on("click","#field-button",function (e) {
         // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
         success: function (data)   // A function to be called if request succeeds
         {
-            var field='<li id="'+data+'" class="field-option"><a href="#">Выбор</a><button  id="'+data+'" class="btn btn-primary card-btn">+</button></li>'
+            var field='<li id="'+data+'" class="field-option"><a id="'+data+'" href="#">default</a><button  id="'+data+'" class="btn btn-primary card-btn">+</button></li>'
             $("ul.list-unstyled").append(field)
         }
     });
@@ -151,6 +151,63 @@ $(document).on("change",".card-textarea",function (e) {
         // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
         success: function (data)   // A function to be called if request succeeds
         {
+        }
+    });
+});
+
+$(document).on("click",".field-option a",function (e) {
+    console.log(e.target.id);
+    $.ajax({
+        url: '/minds/get-field', // Url to which the request is send
+        type: "GET",             // Type of request to be send, called as method
+        data: {id:e.target.id}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        // contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData: true,
+        dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+        success: function (data)   // A function to be called if request succeeds
+        {
+            var i;
+            console.log(data['cards']);
+            $('.field').html('');
+            for(i=0;i<data['cards'].length;i++){
+                var x=data['cards'][i]['xPos']-218;
+                var y=data['cards'][i]['yPos']-74;
+                var card=
+                    '<div id="' + data['cards'][i]['id'] + '" class="card ui-widget-content" style="top : '+y +'px; left : '+x +'px;">' +
+                    '<div class="row">' +
+                    '<div  id="' +  data['cards'][i]['id']  + '" class="card-delete glyphicon glyphicon-remove"></div> ' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div id="' +  data['cards'][i]['id']  +'"  class="card-text">'+data['cards'][i]['text'] +'</div> '+
+                    '<textarea id="' +  data['cards'][i]['id']  + '" class="card-textarea" >'+data['cards'][i]['text'] +'</textarea>'+
+                    '</div>';
+                $('.field').prepend(card);
+                $(".card").draggable({
+                    containment:".field", scroll:false,
+                    drag:function (e) {
+                    },
+                    stop:function (e) {
+                        var id="#"+e.target.id;
+                        var posX=$(id).offset().left;
+                        var posY=$(id).offset().top;
+
+                        $.ajax({
+                            url: '/minds/set-card-pos', // Url to which the request is send
+                            type: "GET",             // Type of request to be send, called as method
+                            data: {id:e.target.id,posX:posX,posY:posY}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                            // contentType: false,       // The content type used when sending data to the server.
+                            cache: false,             // To unable request pages to be cached
+                            processData: true,
+                            // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+                            success: function (data)   // A function to be called if request succeeds
+                            {
+                                console.log('xPox='+posX+'  yPox='+posY);
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 });
