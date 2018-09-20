@@ -13,11 +13,15 @@ $this->title = 'Мои мысли';
             <div id="add-field" class="row">
                 <button id="field-button" class="btn btn-primary"><b>+</b> Добавить поле</button>
             </div>
-            <nav>
+            <nav class="fields">
                 <ul class="list-unstyled text-center">
                     <?php
                     foreach ($fields as $field) { ?>
-                        <li id="<?= $field->id ?>" class="field-option"><a id="<?= $field->id ?>" href="#"><?= $field->name ?></a>
+                        <li id="<?= $field->id ?>" class="field-option">
+                            <a id="<?= $field->id ?>" class="field-link" href="#" style="display:inline"><?= $field->name ?></a>
+                            <input id="<?= $field->id ?>" class="field-name" type="text" placeholder="<?= $field->name ?>" style="display: none;">
+                            <div id="<?= $field->id ?>" class="field-delete glyphicon glyphicon-remove"></div>
+                            <div id="<?= $field->id ?>" class="field-rename glyphicon glyphicon-pencil"></div>
                             <button id="<?= $field->id ?>" class="btn btn-primary card-btn">+</button>
                         </li>
                         <?php

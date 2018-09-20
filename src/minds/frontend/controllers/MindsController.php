@@ -146,4 +146,32 @@ class MindsController extends Controller
         }
         return false;
     }
+
+    public function actionFieldDelete($id){
+        $field=Field::find()->where(['id'=>$id])->one();
+        if($field){
+            $cards=Card::find()->where(['field_id'=>$field->id])->all();
+            if($cards){
+                foreach ($cards as $card){
+                    $card->delete();
+                }
+            }
+            $field->delete();
+            return true;
+        }
+        return false;
+    }
+
+    public function actionFieldRename($id,$name){
+        /**
+         * @var $field Field
+         */
+        $field=Field::find()->where(['id'=>$id])->one();
+        if($field) {
+            $field->name=$name;
+            $field->save();
+            return true;
+        }
+        return false;
+    }
 }

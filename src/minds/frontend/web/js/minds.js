@@ -1,6 +1,9 @@
 var clickID;
 var cardID;
+$( ".card-group" ).sortable().disableSelection();
+$(".card-group").draggable();
 $(".card").draggable({
+    stack: ".card",
     containment:".field", scroll:false,
     drag:function (e) {
     },
@@ -34,11 +37,11 @@ $(document).ready(function () {
 $(document).on("click", ".card-btn", function (e) {
     e.preventDefault();
 
-    cardID='.card#'+clickID;
+    cardID='.card#'+e.target.id;
     $.ajax({
         url: '/minds/add-card', // Url to which the request is send
         type: "GET",             // Type of request to be send, called as method
-        data: {field_id: clickID}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        data: {field_id: e.target.id}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
         // contentType: false,       // The content type used when sending data to the server.
         cache: false,             // To unable request pages to be cached
         processData: true,
@@ -56,6 +59,7 @@ $(document).on("click", ".card-btn", function (e) {
                 '</div>';
             $(".field").prepend(card);
             $(".card").draggable({
+                stack: ".card",
                 containment:".field", scroll:false,
                 drag:function (e) {
                 },
@@ -95,12 +99,33 @@ $(document).on("click","#field-button",function (e) {
         // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
         success: function (data)   // A function to be called if request succeeds
         {
-            var field='<li id="'+data+'" class="field-option"><a id="'+data+'" href="#">default</a><button  id="'+data+'" class="btn btn-primary card-btn">+</button></li>'
+            var field='<li id="'+data+'" class="field-option"><a id="'+data+'" href="#">default</a>' +
+                '<div id="'+data+'" class="field-delete glyphicon glyphicon-remove"></div>'+
+            '<div id="'+data+'" class="field-rename glyphicon glyphicon-pencil"></div>'+
+                '<button  id="'+data+'" class="btn btn-primary card-btn">+</button></li>';
             $("ul.list-unstyled").append(field)
         }
     });
 });
 
+$(document).on("click", ".field-delete", function (e) {
+    var id='#'+e.target.id;
+    var element='.field-option'+id;
+    $.ajax({
+        url: '/minds/field-delete', // Url to which the request is send
+        type: "GET",             // Type of request to be send, called as method
+        data: {id:e.target.id}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        // contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData: true,
+        // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+        success: function (data)   // A function to be called if request succeeds
+        {
+            console.log($(element).attr('id'));
+            $(element).remove();
+        }
+    });
+});
 $(document).on("click",".card-delete",function (e) {
     var id='#'+e.target.id;
     var element='.card'+id;
@@ -208,6 +233,38 @@ $(document).on("click",".field-option a",function (e) {
                     }
                 });
             }
+        }
+    });
+});
+
+$(document).on("click",".field-rename",function (e) {
+    var id='#'+e.target.id;
+    var field_link='.field-link'+id;
+    console.log(field_link);
+    var field_name='.field-name'+id;
+    var field_name_in=$('.fields').find(field_name);
+    var field_name_link=$('.fields').find(field_link);
+    field_name_in.css('display','inline');
+});
+
+$(document).on("change",".field-name",function (e) {
+    var id='#'+e.target.id;
+    var element='.field-name'+id;
+    var field_link='.field-link'+id;
+    var field_name=$('.fields').find(element);
+    var field_link_name=$('.fields').find(field_link);
+    $.ajax({
+        url: '/minds/field-rename', // Url to which the request is send
+        type: "GET",             // Type of request to be send, called as method
+        data: {id:e.target.id,name:field_name.val()}, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        // contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData: true,
+        // dataType: 'json',// To send DOMDocument or non processed data file it is set to false
+        success: function (data)   // A function to be called if request succeeds
+        {
+            field_name.css('display','none');
+            field_link_name.html(field_name.val());
         }
     });
 });
